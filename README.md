@@ -18,6 +18,8 @@ Seeding support for the app using the [Seeder Service](https://github.com/tobent
         - [Adding Seeders](#adding-seeders)
         - [Running Seeders](#running-seeders)
     - [User Seeding](#user-seeding)
+    - [Repository](#repository)
+        - [Creating Repository Factories](#creating-repository-factories)
 - [Credits](#credits)
 ___
 
@@ -402,13 +404,13 @@ $app->on(
 To run your added seeders use the ```seed``` console command.
 
 ```php
-php app seed
+php ap seed
 ```
 
 **Run only specific seeders by its name**
 
 ```php
-php app seed --name=users
+php ap seed --name=users
 ```
 
 **Display seeded entities**
@@ -416,7 +418,7 @@ php app seed --name=users
 You may display the seeded entities with the verbosity option:
 
 ```php
-php app seed -v
+php ap seed -v
 ```
 
 **List all seeder names**
@@ -424,7 +426,7 @@ php app seed -v
 You may display the seeder names by using the ```seed:list``` console command.
 
 ```php
-php app seed:list
+php ap seed:list
 ```
 
 ## User Seeding
@@ -457,6 +459,88 @@ $app->on(
         $seeders->addSeeder('users', UserStorageSeeder::class);
     }
 );
+```
+
+## Repository
+
+You may easily create seed [factories](#factories) and [seeders](#seeders) from any repository implementing the [Repository Interface](https://github.com/tobento-ch/service-repository#repository-interface).
+
+### Creating Repository Factories
+
+**Using the repository factory**
+
+By using the ```RepositoryFactory::new``` method, you can quickly create a seed factory, which may be useful for testing purposes.
+
+```php
+use Tobento\App\Seeding\Repository\RepositoryFactory;
+use Tobento\Service\Repository\RepositoryInterface;
+use Tobento\Service\Seeder\SeedInterface;
+use Tobento\Service\Seeder\Lorem;
+
+$factory = RepositoryFactory::new(
+    repository: MyProductRepository::class, // string|RepositoryInterface
+    definition: function (SeedInterface $seed): array {
+        return [
+            'sku' => Lorem::word(number: 1),
+            'desc' => Lorem::sentence(number: 2),
+        ];
+    }
+);
+
+// using the factory:
+$products = $factory->times(10)->make();
+```
+
+[Storage Repositories](https://github.com/tobento-ch/service-repository-storage) with defined [columns](https://github.com/tobento-ch/service-repository-storage#repository-with-columns), will create the definition automatically based on the columns. You do not need to set a definition at all.
+
+```php
+use Tobento\App\Seeding\Repository\RepositoryFactory;
+
+$factory = RepositoryFactory::new(repository: MyProductRepository::class);
+
+// using the factory:
+$products = $factory->times(10)->make();
+```
+
+Check out the [Using Factories](#using-factories) section for more info using the factory in general.
+
+**Using the AbstractFactory**
+
+To create a factory, create a class that extends the ```AbstractFactory::class``` and use the ```REPOSITORY``` constant to define your repository class:
+
+```php
+use Tobento\App\Seeding\Repository\AbstractFactory;
+
+class ProductFactory extends AbstractFactory
+{
+    public const REPOSITORY = MyProductRepository::class;
+}
+
+// using the factory:
+$products = ProductFactory::new()->times(10)->make();
+```
+
+Sure, you may customize the definition for more flexibility:
+
+```php
+use Tobento\App\Seeding\Repository\AbstractFactory;
+
+class ProductFactory extends AbstractFactory
+{
+    public function definition(): array
+    {
+        // you may call the parent if you have
+        // repositories with columns so it will
+        // automatically create the definition
+        // based on the columns.
+        $definition = parent::definition();
+        
+        // and just overwrite if needed:
+        $definition['name'] = $this->seed->firstname();
+        
+        return $definition;
+    }
+}
 ```
 
 # Credits
