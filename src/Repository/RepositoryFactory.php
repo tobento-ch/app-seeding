@@ -34,7 +34,7 @@ class RepositoryFactory
         null|Closure $definition = null,
         array $replaces = [],
     ): FactoryInterface {
-        return new class($repository, $definition, $replaces = []) extends AbstractFactory {
+        return new class($repository, $definition, $replaces) extends AbstractFactory {
             //
         };
     }
