@@ -109,8 +109,8 @@ class AbstractFactoryTest extends TestCase
         $app = $this->createApp();
         $repo = $this->createStorageRepository(
             columns: [
-                Column\Id::new(),
-                Column\Text::new('email'),
+                new Column\Id(),
+                new Column\Text('email'),
             ],
         );
         
@@ -126,7 +126,7 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Id::new(),
+                    new Column\Id(),
                 ],
             )
         );
@@ -142,11 +142,11 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Id::new(),
-                    Column\Text::new('email'),
-                    Column\Text::new('smartphone'),
-                    Column\Text::new('telephone'),
-                    Column\Text::new('password'),
+                    new Column\Id(),
+                    new Column\Text('email'),
+                    new Column\Text('smartphone'),
+                    new Column\Text('telephone'),
+                    new Column\Text('password'),
                 ],
             )
         );
@@ -165,9 +165,9 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Integer::new(name: 'foo', type: 'int')->type(length: 3),
-                    Column\Integer::new(name: 'bar', type: 'tinyInt')->type(length: 2),
-                    Column\Integer::new(name: 'baz', type: 'bigInt')->type(length: 5),
+                    new Column\Integer(name: 'foo', type: 'int')->type(length: 3),
+                    new Column\Integer(name: 'bar', type: 'tinyInt')->type(length: 2),
+                    new Column\Integer(name: 'baz', type: 'bigInt')->type(length: 5),
                 ],
             )
         );
@@ -185,7 +185,7 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Boolean::new(name: 'foo'),
+                    new Column\Boolean(name: 'foo'),
                 ],
             )
         );
@@ -201,9 +201,9 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Text::new(name: 'foo', type: 'string')->type(length: 5),
-                    Column\Text::new(name: 'bar', type: 'char')->type(length: 3),
-                    Column\Text::new(name: 'baz', type: 'text'),
+                    new Column\Text(name: 'foo', type: 'string')->type(length: 5),
+                    new Column\Text(name: 'bar', type: 'char')->type(length: 3),
+                    new Column\Text(name: 'baz', type: 'text'),
                 ],
             )
         );
@@ -221,10 +221,10 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Datetime::new(name: 'foo', type: 'datetime'),
-                    Column\Datetime::new(name: 'bar', type: 'date'),
-                    Column\Datetime::new(name: 'baz', type: 'time'),
-                    Column\Datetime::new(name: 'stamp', type: 'timestamp'),
+                    new Column\Datetime(name: 'foo', type: 'datetime'),
+                    new Column\Datetime(name: 'bar', type: 'date'),
+                    new Column\Datetime(name: 'baz', type: 'time'),
+                    new Column\Datetime(name: 'stamp', type: 'timestamp'),
                 ],
             )
         );
@@ -243,9 +243,9 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\FloatCol::new(name: 'foo', type: 'float'),
-                    Column\FloatCol::new(name: 'bar', type: 'double'),
-                    Column\FloatCol::new(name: 'baz', type: 'decimal'),
+                    new Column\FloatCol(name: 'foo', type: 'float'),
+                    new Column\FloatCol(name: 'bar', type: 'double'),
+                    new Column\FloatCol(name: 'baz', type: 'decimal'),
                 ],
             )
         );
@@ -263,7 +263,7 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Json::new(name: 'foo'),
+                    new Column\Json(name: 'foo'),
                 ],
             )
         );
@@ -279,7 +279,7 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Translatable::new(name: 'foo')->type(length: 5),
+                    new Column\Translatable(name: 'foo')->type(length: 5),
                 ],
             )
         );
@@ -296,7 +296,7 @@ class AbstractFactoryTest extends TestCase
         $factory = $this->createSeedFactory(
             repository: $this->createStorageRepository(
                 columns: [
-                    Column\Translatable::new(name: 'foo', subtype: 'array'),
+                    new Column\Translatable(name: 'foo', subtype: 'array'),
                 ],
             )
         );
@@ -335,9 +335,9 @@ class ProductRepository extends StorageRepository
     protected function configureColumns(): iterable|ColumnsInterface
     {
         return [
-            Column\Id::new(),
-            Column\Text::new('sku'),
-            Column\Text::new('title'),
+            new Column\Id(),
+            new Column\Text('sku'),
+            new Column\Text('title'),
         ];
     }
 }

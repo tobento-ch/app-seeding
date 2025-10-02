@@ -61,8 +61,8 @@ class RepositoryFactoryTest extends TestCase
             storage: new  InMemoryStorage(items: []),
             table: 'users',
             columns: [
-                Column\Id::new(),
-                Column\Text::new('email'),
+                new Column\Id(),
+                new Column\Text('email'),
             ],
         ) extends StorageRepository {
             //
