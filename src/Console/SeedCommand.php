@@ -102,6 +102,6 @@ class SeedCommand extends AbstractCommand
             default => [],
         };
         
-        return json_encode($array, JSON_PRETTY_PRINT);
+        return (string)json_encode($array, JSON_PRETTY_PRINT);
     }
 }
