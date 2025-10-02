@@ -18,7 +18,7 @@ use Tobento\Service\Seeder\Arr;
 use Tobento\Service\Seeder\Lorem;
 use Tobento\Service\Seeder\Num;
 use Tobento\Service\Seeder\Str;
-use Tobento\Service\Repository\RepositoryInterface;
+use Tobento\Service\Repository\WriteRepositoryInterface;
 use Tobento\Service\Repository\Storage\StorageRepository;
 use Tobento\Service\Repository\Storage\Column\ColumnInterface;
 use Tobento\Service\Repository\Storage\Column\Translatable;
@@ -30,19 +30,19 @@ use Closure;
 abstract class AbstractFactory extends BaseAbstractFactory
 {
     /**
-     * @var RepositoryInterface
+     * @var WriteRepositoryInterface
      */
-    protected RepositoryInterface $repository;
+    protected WriteRepositoryInterface $repository;
     
     /**
      * Create a new AbstractFactory.
      *
-     * @param null|string|RepositoryInterface $repository
+     * @param null|string|WriteRepositoryInterface $repository
      * @param null|Closure $definition
      * @param array $replaces
      */
     public function __construct(
-        null|string|RepositoryInterface $repository = null,
+        null|string|WriteRepositoryInterface $repository = null,
         protected null|Closure $definition = null,
         array $replaces = [],
     ) {
@@ -60,13 +60,13 @@ abstract class AbstractFactory extends BaseAbstractFactory
         
         parent::__construct($replaces);
     }
-
+    
     /**
      * Returns the repository.
      *
-     * @return RepositoryInterface
+     * @return WriteRepositoryInterface
      */
-    public function repository(): RepositoryInterface
+    public function repository(): WriteRepositoryInterface
     {
         return $this->repository;
     }

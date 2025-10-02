@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Tobento\App\Seeding\Repository;
 
-use Tobento\App\Seeding\FactoryInterface;
-use Tobento\Service\Repository\RepositoryInterface;
 use Closure;
+use Tobento\App\Seeding\FactoryInterface;
+use Tobento\Service\Repository\WriteRepositoryInterface;
 
 /**
  * RepositoryFactory
@@ -25,12 +25,12 @@ class RepositoryFactory
     /**
      * Create a new repository seed factory.
      *
-     * @param string|RepositoryInterface $repository
+     * @param string|WriteRepositoryInterface $repository
      * @param null|Closure $definition
      * @param array $replaces
      */
     public static function new(
-        string|RepositoryInterface $repository,
+        string|WriteRepositoryInterface $repository,
         null|Closure $definition = null,
         array $replaces = [],
     ): FactoryInterface {
