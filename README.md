@@ -33,7 +33,7 @@ composer require tobento/app-seeding
 
 ## Requirements
 
-- PHP 8.0 or greater
+- PHP 8.4 or greater
 
 # Documentation
 
@@ -65,7 +65,7 @@ use Tobento\Service\Seeder\SeedInterface;
 use Tobento\App\Seeding\SeedersInterface;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
@@ -98,7 +98,7 @@ use Tobento\Service\Seeder\SeedInterface;
 use Tobento\Service\Seeder\Resource;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
