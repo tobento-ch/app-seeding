@@ -28,9 +28,9 @@ class Seeders implements SeedersInterface
     protected array $seeders = [];
     
     /**
-     * Create a new AbstractFactory.
+     * Create a new Seeders.
      *
-     * @param array $replaces
+     * @param ContainerInterface $container
      */
     public function __construct(
         protected ContainerInterface $container,
@@ -102,7 +102,7 @@ class Seeders implements SeedersInterface
         try {
             $seeder = (new Autowire($this->container))->resolve($seeder);
         } catch (AutowireException $e) {
-            throw new SeedingException($e->getMessage(), (int)$e->getCode(), $e);
+            throw new SeedingException($e->getMessage(), $e->getCode(), $e);
         }
         
         if ($seeder instanceof SeederInterface) {
