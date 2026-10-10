@@ -13,6 +13,7 @@ Seeding support for the app using the [Seeder Service](https://github.com/tobent
     - [Factories](#factories)
         - [Creating Factories](#creating-factories)
         - [Using Factories](#using-factories)
+        - [Wrapping Factories](#wrapping-factories)
     - [Seeders](#seeders)
         - [Creating Seeders](#creating-seeders)
         - [Adding Seeders](#adding-seeders)
@@ -323,6 +324,70 @@ $users = $factory
     ->deleted()
     ->times(10)
     ->make();
+```
+
+### Wrapping Factories
+
+Use the ```CallbackWrappingFactory::class``` to run code immediately before and after every call that stores entities. This is useful if some state is only needed while writing, for example permissions or a current user, so it can be set up before and reliably restored afterwards.
+
+```php
+use Tobento\App\Seeding\CallbackWrappingFactory;
+
+$factory = new CallbackWrappingFactory(
+    // The factory to wrap:
+    factory: UserFactory::new(),
+    
+    // Called before storing:
+    before: function (): void {
+        // set up state ...
+    },
+    
+    // Called after storing, even if storing fails:
+    after: function (): void {
+        // restore state ...
+    },
+);
+
+// The callbacks run around each call:
+$users = $factory->times(10)->create();
+$user = $factory->createOne();
+```
+
+The wrapped factory is used like any other [factory](#using-factories).
+
+**Which methods are wrapped**
+
+| Method | Callbacks |
+| --- | --- |
+| ```create()``` | run before and after |
+| ```createOne()``` | run before and after |
+| ```make()```, ```makeOne()```, ```raw()```, ```rawOne()``` | not run, as nothing is stored |
+| ```times()```, ```definition()``` | not run |
+
+**Good to know**
+
+* The ```after``` callback runs even if storing throws an exception, so the state is always restored.
+* If the ```before``` callback throws, the factory is not called and the ```after``` callback does not run.
+* The callbacks run on every storing call, so the same factory instance can be used multiple times.
+* The wrapper only forwards the methods of the ```FactoryInterface::class```. Apply ```modify()``` and ```modifyEntity()``` on the factory before wrapping it.
+* The ```new()``` method is not supported and throws a ```LogicException```. Use the constructor.
+
+**Example using the ACL Trust Scope**
+
+You may use it with the [ACL Trust Scope](https://github.com/tobento-ch/service-acl#trust-scope) to grant permissions only while entities are stored:
+
+```php
+use Tobento\App\Seeding\CallbackWrappingFactory;
+use Tobento\Service\Acl\AclTrustScope;
+
+$scope = new AclTrustScope($acl)
+    ->withUser($trustedUser);
+
+$factory = new CallbackWrappingFactory(
+    factory: $factory,
+    before: fn () => $scope->start(),
+    after: fn () => $scope->end(),
+);
 ```
 
 ## Seeders
